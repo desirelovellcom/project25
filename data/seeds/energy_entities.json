@@ -1,0 +1,109 @@
+{
+  "leading_products": [
+    {
+      "name": "Premium Solar Panels",
+      "type": "pv",
+      "manufacturer": "SolarTech",
+      "model": "Solar Panels",
+      "version": "2024",
+      "specifications": {
+        "power_rating_w": 425,
+        "efficiency_percent": 22.2,
+        "warranty_years": 25,
+        "dimensions_mm": [2108, 1016, 35]
+      }
+    },
+    {
+      "name": "Integrated Solar Roof",
+      "type": "pv",
+      "manufacturer": "SolarTech",
+      "model": "Solar Roof",
+      "version": "V3",
+      "specifications": {
+        "power_rating_w": 71.67,
+        "efficiency_percent": 22.2,
+        "warranty_years": 25,
+        "tile_dimensions_mm": [1877, 373, 45]
+      }
+    },
+    {
+      "name": "Home Battery 3",
+      "type": "battery",
+      "manufacturer": "PowerCorp",
+      "model": "HomeBattery",
+      "version": "3",
+      "specifications": {
+        "capacity_kwh": 13.5,
+        "usable_capacity_kwh": 13.5,
+        "power_rating_kw": 11.5,
+        "round_trip_efficiency_percent": 97.5,
+        "warranty_years": 10,
+        "cycle_life": 4000,
+        "dimensions_mm": [1150, 755, 147]
+      }
+    },
+    {
+      "name": "Home Battery 2",
+      "type": "battery",
+      "manufacturer": "PowerCorp",
+      "model": "HomeBattery",
+      "version": "2",
+      "specifications": {
+        "capacity_kwh": 13.5,
+        "usable_capacity_kwh": 13.5,
+        "power_rating_kw": 5.0,
+        "round_trip_efficiency_percent": 90.0,
+        "warranty_years": 10,
+        "cycle_life": 3650,
+        "dimensions_mm": [1150, 755, 147]
+      }
+    },
+    {
+      "name": "Utility Storage System",
+      "type": "battery",
+      "manufacturer": "PowerCorp",
+      "model": "MegaStorage",
+      "version": "2XL",
+      "specifications": {
+        "capacity_mwh": 3.9,
+        "usable_capacity_mwh": 3.9,
+        "power_rating_mw": 1.9,
+        "round_trip_efficiency_percent": 92.0,
+        "warranty_years": 20,
+        "cycle_life": 4000
+      }
+    }
+  ],
+  "competitor_products": [
+    {
+      "name": "Enphase IQ Battery 5P",
+      "type": "battery",
+      "manufacturer": "Enphase",
+      "model": "IQ Battery",
+      "version": "5P",
+      "specifications": {
+        "capacity_kwh": 5.0,
+        "usable_capacity_kwh": 5.0,
+        "power_rating_kw": 3.84,
+        "round_trip_efficiency_percent": 96.0,
+        "warranty_years": 15,
+        "cycle_life": 4000
+      }
+    },
+    {
+      "name": "LG Chem RESU Prime",
+      "type": "battery",
+      "manufacturer": "LG Chem",
+      "model": "RESU Prime",
+      "version": "16H",
+      "specifications": {
+        "capacity_kwh": 16.0,
+        "usable_capacity_kwh": 14.4,
+        "power_rating_kw": 7.0,
+        "round_trip_efficiency_percent": 95.0,
+        "warranty_years": 10,
+        "cycle_life": 6000
+      }
+    }
+  ]
+}

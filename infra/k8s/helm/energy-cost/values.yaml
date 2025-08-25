@@ -1,0 +1,131 @@
+# Default values for energy-cost
+replicaCount:
+  api: 3
+  worker: 2
+  scheduler: 1
+  web: 2
+
+image:
+  repository: ""  # Will be set by CI/CD
+  pullPolicy: IfNotPresent
+  tag: ""  # Will be set by CI/CD
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+
+podAnnotations:
+  prometheus.io/scrape: "true"
+  prometheus.io/port: "8000"
+
+podSecurityContext:
+  fsGroup: 2000
+
+securityContext:
+  capabilities:
+    drop:
+    - ALL
+  readOnlyRootFilesystem: true
+  runAsNonRoot: true
+  runAsUser: 1000
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 8000
+
+ingress:
+  enabled: true
+  className: "nginx"
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    nginx.ingress.kubernetes.io/rate-limit: "100"
+    nginx.ingress.kubernetes.io/rate-limit-window: "1m"
+  hosts:
+    - host: energy-cost.example.com
+      paths:
+        - path: /
+          pathType: Prefix
+  tls:
+    - secretName: energy-cost-tls
+      hosts:
+        - energy-cost.example.com
+
+resources:
+  api:
+    limits:
+      cpu: 1000m
+      memory: 1Gi
+    requests:
+      cpu: 500m
+      memory: 512Mi
+  worker:
+    limits:
+      cpu: 2000m
+      memory: 2Gi
+    requests:
+      cpu: 1000m
+      memory: 1Gi
+  web:
+    limits:
+      cpu: 500m
+      memory: 512Mi
+    requests:
+      cpu: 250m
+      memory: 256Mi
+
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 70
+  targetMemoryUtilizationPercentage: 80
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity:
+  podAntiAffinity:
+    preferredDuringSchedulingIgnoredDuringExecution:
+    - weight: 100
+      podAffinityTerm:
+        labelSelector:
+          matchExpressions:
+          - key: app.kubernetes.io/name
+            operator: In
+            values:
+            - energy-cost
+        topologyKey: kubernetes.io/hostname
+
+# Environment variables
+env:
+  DATABASE_URL: ""  # Set by external-secrets
+  REDIS_URL: ""     # Set by external-secrets
+  OPENSEARCH_URL: ""  # Set by external-secrets
+  S3_BUCKET: ""     # Set by external-secrets
+  
+# External secrets
+externalSecrets:
+  enabled: true
+  secretStore: aws-secrets-manager
+  
+# Monitoring
+monitoring:
+  enabled: true
+  serviceMonitor:
+    enabled: true
+    interval: 30s
+    path: /metrics
+
+# Database migrations
+migrations:
+  enabled: true
+  image:
+    repository: migrate/migrate
+    tag: v4.16.2

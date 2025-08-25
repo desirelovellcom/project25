@@ -1,0 +1,65 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: energy-cost-api
+  namespace: energy-cost-prod
+spec:
+  replicas: 5
+  strategy:
+    canary:
+      canaryService: energy-cost-api-canary
+      stableService: energy-cost-api-stable
+      trafficRouting:
+        nginx:
+          stableIngress: energy-cost-api-stable
+          annotationPrefix: nginx.ingress.kubernetes.io
+          additionalIngressAnnotations:
+            canary-by-header: X-Canary
+      steps:
+      - setWeight: 10
+      - pause: {duration: 2m}
+      - setWeight: 20
+      - pause: {duration: 2m}
+      - setWeight: 50
+      - pause: {duration: 5m}
+      - setWeight: 100
+      analysis:
+        templates:
+        - templateName: success-rate
+        args:
+        - name: service-name
+          value: energy-cost-api-canary
+        startingStep: 2
+        interval: 30s
+  selector:
+    matchLabels:
+      app: energy-cost-api
+  template:
+    metadata:
+      labels:
+        app: energy-cost-api
+    spec:
+      containers:
+      - name: api
+        image: energy-cost-api:latest
+        ports:
+        - containerPort: 8000
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 8000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: 8000
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        resources:
+          requests:
+            memory: 512Mi
+            cpu: 500m
+          limits:
+            memory: 1Gi
+            cpu: 1000m
